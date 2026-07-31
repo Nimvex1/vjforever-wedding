@@ -1,0 +1,29 @@
+{
+  "routes": [
+    {
+      "routePath": "/api/rsvp",
+      "mountPath": "/api",
+      "method": "GET",
+      "module": [
+        "api/rsvp.ts:onRequestGet"
+      ]
+    },
+    {
+      "routePath": "/api/rsvp",
+      "mountPath": "/api",
+      "method": "OPTIONS",
+      "module": [
+        "api/rsvp.ts:onRequestOptions"
+      ]
+    },
+    {
+      "routePath": "/api/rsvp",
+      "mountPath": "/api",
+      "method": "POST",
+      "module": [
+        "api/rsvp.ts:onRequestPost"
+      ]
+    }
+  ],
+  "baseURL": "/"
+}
