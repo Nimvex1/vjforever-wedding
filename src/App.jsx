@@ -26,6 +26,7 @@ const W = {
       venue: 'Krupa Apartments, Nairobi, Kenya',
       mapUrl: 'https://maps.app.goo.gl/e62Xy5J3VsVAVVjo7',
       color: 'from-yellow-500 to-yellow-800',
+      image: '/haldi.png',
     },
     {
       title: 'Mehndi',
@@ -36,6 +37,7 @@ const W = {
       venue: 'Krupa Apartments, Nairobi, Kenya',
       mapUrl: 'https://maps.app.goo.gl/e62Xy5J3VsVAVVjo7',
       color: 'from-emerald-700 to-emerald-950',
+      image: '/mehendi.png',
     },
     {
       title: 'Sangeet',
@@ -321,10 +323,16 @@ function EventsSection() {
       <div className="max-w-5xl mx-auto space-y-8">
         {W.events.map((event, i) => (
           <Reveal key={event.title} delay={i * 0.15}>
-            <div className="event-card border border-gold/20 group">
-              <div className={`relative bg-gradient-to-br ${event.color} p-8 sm:p-10`}>
-                <div className="absolute inset-0 bg-black/20" />
-                <div className="relative z-10 text-center text-cream">
+            <div className="event-card border border-gold/20 group overflow-hidden">
+              <div className={`relative bg-gradient-to-br ${event.color} ${event.image ? 'h-[420px] sm:h-[480px] flex flex-col justify-end' : 'p-8 sm:p-10'}`}>
+                {event.image && (
+                  <>
+                    <img src={event.image} alt={event.title} className="absolute inset-0 w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                  </>
+                )}
+                {!event.image && <div className="absolute inset-0 bg-black/20" />}
+                <div className={`relative z-10 text-center text-cream ${event.image ? 'p-8 sm:p-10' : ''}`}>
                   <h3 className="font-script text-5xl text-cream mb-2">{event.title}</h3>
                   <p className="italic text-base text-cream/80 max-w-md mx-auto whitespace-pre-line">
                     {event.description}
