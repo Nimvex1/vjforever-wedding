@@ -267,7 +267,7 @@ function HeroSection() {
       />
 
 
-      <motion.div style={{ y, opacity }} className="relative z-10 min-h-screen flex flex-col items-center justify-center px-6 text-center">
+      <motion.div style={{ y, opacity }} className="relative z-10 min-h-screen flex flex-col items-center justify-center px-6 text-center -mt-32">
         <Reveal delay={0.2}>
           <h1 className="text-6xl sm:text-8xl md:text-9xl leading-tight flex items-center gap-2 sm:gap-4 flex-wrap justify-center" style={{ fontFamily: '"DancingScript", cursive', color: '#c43c46' }}>
             <span>{W.groom}</span>
