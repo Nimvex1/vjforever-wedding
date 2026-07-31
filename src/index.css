@@ -4,7 +4,8 @@
 
 @font-face {
   font-family: 'DancingScript';
-  src: url('/DancingScript-Regular.ttf') format('truetype');
+  src: url('https://fonts.gstatic.com/s/dancingscript/v25/If2cXTr6YS-zF4S-kcSWSVi_sxjsohD9F50Ruu7BMSo3Sup8.woff2') format('woff2'),
+       url('/DancingScript-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -12,7 +13,8 @@
 
 @font-face {
   font-family: 'DancingScript';
-  src: url('/DancingScript-Bold.ttf') format('truetype');
+  src: url('https://fonts.gstatic.com/s/dancingscript/v25/If2cXTr6YS-zF4S-kcSWSVi_sxjsohD9F50Ruu7BMSo3Sup8.woff2') format('woff2'),
+       url('/DancingScript-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
