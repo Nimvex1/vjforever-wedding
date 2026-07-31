@@ -26,7 +26,7 @@ const W = {
       venue: 'Krupa Apartments, Nairobi, Kenya',
       mapUrl: 'https://maps.app.goo.gl/e62Xy5J3VsVAVVjo7',
       color: 'from-yellow-500 to-yellow-800',
-      image: '/haldi.png',
+      image: '/haldi.jpg',
     },
     {
       title: 'Mehndi',
@@ -37,7 +37,7 @@ const W = {
       venue: 'Krupa Apartments, Nairobi, Kenya',
       mapUrl: 'https://maps.app.goo.gl/e62Xy5J3VsVAVVjo7',
       color: 'from-emerald-700 to-emerald-950',
-      image: '/mehendi.png',
+      image: '/mehendi.jpg',
     },
     {
       title: 'Sangeet',
@@ -48,7 +48,7 @@ const W = {
       venue: 'Jain Bhavan, Nairobi, Kenya',
       mapUrl: 'https://maps.app.goo.gl/zxwDKaajZq8gNAxj7',
       color: 'from-teal-700 to-teal-950',
-      image: '/sangeet.png',
+      image: '/sangeet.jpg',
     },
     {
       title: 'Wedding',
@@ -59,7 +59,7 @@ const W = {
       venue: 'Naiposha Gardens, Nairobi, Kenya',
       mapUrl: 'https://maps.app.goo.gl/vvUKC6R2AQi3Xbcn8',
       color: 'from-blue-800 to-blue-950',
-      image: '/wedding.png',
+      image: '/wedding.jpg',
     },
   ],
 }
