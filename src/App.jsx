@@ -627,8 +627,11 @@ export default function App() {
 
   useEffect(() => {
     document.title = `${W.groom} & ${W.bride} - Wedding Invitation`
+    const onOpened = () => setStarted(true)
     const loader = document.getElementById('envelope-loader')
     if (loader && loader.style.display === 'none') setStarted(true)
+    window.addEventListener('envelope-opened', onOpened)
+    return () => window.removeEventListener('envelope-opened', onOpened)
   }, [])
 
   const handleOpen = () => {
