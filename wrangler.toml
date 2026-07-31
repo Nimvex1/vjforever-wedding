@@ -1,0 +1,7 @@
+name = "vj-forever"
+compatibility_date = "2024-01-01"
+pages_build_output_dir = "dist"
+
+kv_namespaces = [
+  { binding = "RSVP_KV", id = "2725ae065e7a40a3b3676034fe75d1fb" }
+]
