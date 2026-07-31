@@ -163,17 +163,17 @@ function MultipleButterflies() {
   )
 }
 
-function MusicPlayer() {
+function MusicPlayer({ start }) {
   const audioRef = useRef(null)
   const [muted, setMuted] = useState(false)
 
   useEffect(() => {
     const audio = audioRef.current
-    if (!audio) return
+    if (!audio || !start) return
     audio.volume = 0.45
     audio.loop = true
     audio.play().catch(() => {})
-  }, [])
+  }, [start])
 
   useEffect(() => {
     const audio = audioRef.current
@@ -182,20 +182,22 @@ function MusicPlayer() {
 
   return (
     <>
-      <audio ref={audioRef} src="/music.mp4" autoPlay loop preload="auto" />
-      <button
-        type="button"
-        aria-label={muted ? 'Unmute background music' : 'Mute background music'}
-        onClick={() => {
-          const audio = audioRef.current
-          if (muted) { audio.muted = false; audio.play().catch(() => {}) }
-          else { audio.muted = true }
-          setMuted(m => !m)
-        }}
-        className="fixed bottom-5 right-5 z-50 h-11 w-11 rounded-full bg-foreground/80 text-cream backdrop-blur shadow-elegant flex items-center justify-center hover:scale-105 transition"
-      >
-        {muted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
-      </button>
+      <audio ref={audioRef} src="/music.mp4" preload="auto" />
+      {start && (
+        <button
+          type="button"
+          aria-label={muted ? 'Unmute background music' : 'Mute background music'}
+          onClick={() => {
+            const audio = audioRef.current
+            if (muted) { audio.muted = false; audio.play().catch(() => {}) }
+            else { audio.muted = true }
+            setMuted(m => !m)
+          }}
+          className="fixed bottom-5 right-5 z-50 h-11 w-11 rounded-full bg-foreground/80 text-cream backdrop-blur shadow-elegant flex items-center justify-center hover:scale-105 transition"
+        >
+          {muted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
+        </button>
+      )}
     </>
   )
 }
@@ -620,17 +622,30 @@ function Footer() {
 }
 
 export default function App() {
+  const [started, setStarted] = useState(false)
+
   useEffect(() => {
     document.title = `${W.groom} & ${W.bride} - Wedding Invitation`
   }, [])
 
   return (
     <div className="relative">
+      {!started && (
+        <div
+          onClick={() => setStarted(true)}
+          className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm flex items-center justify-center cursor-pointer transition-opacity duration-700"
+        >
+          <div className="animate-fade-in text-center">
+            <img src="/envelop.png" alt="Open Invitation" className="w-64 sm:w-80 h-auto drop-shadow-2xl hover:scale-105 transition-transform duration-300" />
+            <p className="mt-6 font-script text-2xl text-white drop-shadow-lg animate-pulse">Tap to open</p>
+          </div>
+        </div>
+      )}
       <Suspense fallback={null}>
         <FloatingPetals />
         <MultipleButterflies />
       </Suspense>
-      <MusicPlayer />
+      <MusicPlayer start={started} />
 
       <style>{`
         .bf-fixed {
