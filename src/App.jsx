@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef, useMemo } from 'react'
+import { lazy, Suspense, useState, useEffect, useRef, useMemo } from 'react'
 import { motion, useScroll, useTransform, useInView, AnimatePresence } from 'framer-motion'
-import { Volume2, VolumeX, Navigation, ChevronDown, Heart, MapPin, Calendar, Clock } from 'lucide-react'
+import { Volume2, VolumeX, Navigation, ChevronDown, Heart } from 'lucide-react'
 import './index.css'
 
 const W = {
@@ -253,13 +253,11 @@ function HeroSection() {
 
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-cream">
-      {/* Background image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: 'url(/front-page-1.png)',
-          backgroundPosition: 'center 30%',
-        }}
+      <img
+        src="/front-page-1.png"
+        alt=""
+        fetchPriority="high"
+        className="absolute inset-0 w-full h-full object-cover object-[center_30%]"
       />
 
 
@@ -327,7 +325,7 @@ function EventsSection() {
           <Reveal key={event.title} delay={i * 0.15}>
             {event.image ? (
               <div className="event-card border border-gold/20 group overflow-hidden rounded-2xl relative min-h-[380px] sm:min-h-[440px]">
-                <img src={event.image} alt={event.title} className="absolute inset-0 w-full h-full object-cover object-center" />
+                <img src={event.image} alt={event.title} loading="lazy" width="1200" height="600" className="absolute inset-0 w-full h-full object-cover object-center" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/10" />
                 <div className="relative z-10 flex flex-col justify-end h-full p-8 sm:p-10 text-center text-cream">
                   <h3 className="font-script text-5xl text-cream mb-2">{event.title}</h3>
@@ -627,8 +625,10 @@ export default function App() {
 
   return (
     <div className="relative">
-      <FloatingPetals />
-      <MultipleButterflies />
+      <Suspense fallback={null}>
+        <FloatingPetals />
+        <MultipleButterflies />
+      </Suspense>
       <MusicPlayer play={play} />
 
       <style>{`
