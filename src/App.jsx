@@ -172,12 +172,7 @@ function MusicPlayer() {
     if (!audio) return
     audio.volume = 0.45
     audio.loop = true
-    const tryPlay = () => audio.play().catch(() => {})
-    tryPlay()
-    const onInteraction = () => { tryPlay(); window.removeEventListener('click', onInteraction); window.removeEventListener('touchstart', onInteraction) }
-    window.addEventListener('click', onInteraction)
-    window.addEventListener('touchstart', onInteraction)
-    return () => { window.removeEventListener('click', onInteraction); window.removeEventListener('touchstart', onInteraction) }
+    audio.play().catch(() => {})
   }, [])
 
   useEffect(() => {
@@ -187,11 +182,16 @@ function MusicPlayer() {
 
   return (
     <>
-      <audio ref={audioRef} src="/music.mp4" preload="auto" />
+      <audio ref={audioRef} src="/music.mp4" autoPlay loop preload="auto" />
       <button
         type="button"
         aria-label={muted ? 'Unmute background music' : 'Mute background music'}
-        onClick={() => setMuted(m => !m)}
+        onClick={() => {
+          const audio = audioRef.current
+          if (muted) { audio.muted = false; audio.play().catch(() => {}) }
+          else { audio.muted = true }
+          setMuted(m => !m)
+        }}
         className="fixed bottom-5 right-5 z-50 h-11 w-11 rounded-full bg-foreground/80 text-cream backdrop-blur shadow-elegant flex items-center justify-center hover:scale-105 transition"
       >
         {muted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
