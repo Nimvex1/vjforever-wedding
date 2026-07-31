@@ -163,33 +163,39 @@ function MultipleButterflies() {
   )
 }
 
-function MusicPlayer({ play }) {
+function MusicPlayer() {
   const audioRef = useRef(null)
   const [muted, setMuted] = useState(false)
 
   useEffect(() => {
     const audio = audioRef.current
-    if (audio) {
-      audio.volume = 0.45
-      audio.loop = true
-      if (play && !muted) audio.play().catch(() => {})
-      else audio.pause()
-    }
-  }, [play, muted])
+    if (!audio) return
+    audio.volume = 0.45
+    audio.loop = true
+    const tryPlay = () => audio.play().catch(() => {})
+    tryPlay()
+    const onInteraction = () => { tryPlay(); window.removeEventListener('click', onInteraction); window.removeEventListener('touchstart', onInteraction) }
+    window.addEventListener('click', onInteraction)
+    window.addEventListener('touchstart', onInteraction)
+    return () => { window.removeEventListener('click', onInteraction); window.removeEventListener('touchstart', onInteraction) }
+  }, [])
+
+  useEffect(() => {
+    const audio = audioRef.current
+    if (audio) audio.muted = muted
+  }, [muted])
 
   return (
     <>
-      <audio ref={audioRef} src="/audio/background.mp3" preload="auto" />
-      {play && (
-        <button
-          type="button"
-          aria-label={muted ? 'Unmute background music' : 'Mute background music'}
-          onClick={() => setMuted(m => !m)}
-          className="fixed bottom-5 right-5 z-50 h-11 w-11 rounded-full bg-foreground/80 text-cream backdrop-blur shadow-elegant flex items-center justify-center hover:scale-105 transition"
-        >
-          {muted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
-        </button>
-      )}
+      <audio ref={audioRef} src="/music.mp4" preload="auto" />
+      <button
+        type="button"
+        aria-label={muted ? 'Unmute background music' : 'Mute background music'}
+        onClick={() => setMuted(m => !m)}
+        className="fixed bottom-5 right-5 z-50 h-11 w-11 rounded-full bg-foreground/80 text-cream backdrop-blur shadow-elegant flex items-center justify-center hover:scale-105 transition"
+      >
+        {muted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
+      </button>
     </>
   )
 }
@@ -614,13 +620,8 @@ function Footer() {
 }
 
 export default function App() {
-  const [play, setPlay] = useState(false)
-
   useEffect(() => {
     document.title = `${W.groom} & ${W.bride} - Wedding Invitation`
-    const start = () => { setPlay(true); window.removeEventListener('click', start) }
-    window.addEventListener('click', start)
-    return () => window.removeEventListener('click', start)
   }, [])
 
   return (
@@ -629,7 +630,7 @@ export default function App() {
         <FloatingPetals />
         <MultipleButterflies />
       </Suspense>
-      <MusicPlayer play={play} />
+      <MusicPlayer />
 
       <style>{`
         .bf-fixed {
