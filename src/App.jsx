@@ -323,27 +323,18 @@ function EventsSection() {
       <div className="max-w-5xl mx-auto space-y-8">
         {W.events.map((event, i) => (
           <Reveal key={event.title} delay={i * 0.15}>
-            <div className="event-card border border-gold/20 group overflow-hidden">
-              <div className={`relative bg-gradient-to-br ${event.color} ${event.image ? 'h-[420px] sm:h-[480px] flex flex-col justify-end' : 'p-8 sm:p-10'}`}>
-                {event.image && (
-                  <>
-                    <img src={event.image} alt={event.title} className="absolute inset-0 w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-                  </>
-                )}
-                {!event.image && <div className="absolute inset-0 bg-black/20" />}
-                <div className={`relative z-10 text-center text-cream ${event.image ? 'p-8 sm:p-10' : ''}`}>
+            {event.image ? (
+              <div className="event-card border border-gold/20 group overflow-hidden rounded-2xl relative min-h-[380px] sm:min-h-[440px]">
+                <img src={event.image} alt={event.title} className="absolute inset-0 w-full h-full object-cover object-center" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/10" />
+                <div className="relative z-10 flex flex-col justify-end h-full p-8 sm:p-10 text-center text-cream">
                   <h3 className="font-script text-5xl text-cream mb-2">{event.title}</h3>
-                  <p className="italic text-base text-cream/80 max-w-md mx-auto whitespace-pre-line">
-                    {event.description}
-                  </p>
-
+                  <p className="italic text-base text-cream/80 max-w-md mx-auto whitespace-pre-line">{event.description}</p>
                   <div className="flex items-center gap-3 justify-center my-5">
                     <span className="h-px w-10 bg-cream/30" />
                     <span className="text-gold-light">❀</span>
                     <span className="h-px w-10 bg-cream/30" />
                   </div>
-
                   <div className="space-y-3">
                     <div>
                       <div className="font-cinzel text-sm text-gold-light/80">Date</div>
@@ -358,21 +349,50 @@ function EventsSection() {
                       <div className="font-serif-display text-lg mt-1 text-cream">{event.venue}</div>
                     </div>
                   </div>
-
                   <div className="mt-6">
-                    <a
-                      href={event.mapUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 font-cinzel text-xs tracking-widest uppercase px-6 py-3 rounded-full border border-cream/30 text-cream hover:bg-cream/10 transition-all duration-300"
-                    >
+                    <a href={event.mapUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 font-cinzel text-xs tracking-widest uppercase px-6 py-3 rounded-full border border-cream/30 text-cream hover:bg-cream/10 transition-all duration-300">
                       <Navigation className="w-3.5 h-3.5" />
                       Get Directions
                     </a>
                   </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <div className="event-card border border-gold/20 group overflow-hidden rounded-2xl">
+                <div className={`relative bg-gradient-to-br ${event.color} p-8 sm:p-10`}>
+                  <div className="absolute inset-0 bg-black/20" />
+                  <div className="relative z-10 text-center text-cream">
+                    <h3 className="font-script text-5xl text-cream mb-2">{event.title}</h3>
+                    <p className="italic text-base text-cream/80 max-w-md mx-auto whitespace-pre-line">{event.description}</p>
+                    <div className="flex items-center gap-3 justify-center my-5">
+                      <span className="h-px w-10 bg-cream/30" />
+                      <span className="text-gold-light">❀</span>
+                      <span className="h-px w-10 bg-cream/30" />
+                    </div>
+                    <div className="space-y-3">
+                      <div>
+                        <div className="font-cinzel text-sm text-gold-light/80">Date</div>
+                        <div className="font-serif-display text-xl mt-1 text-cream">{event.day} · {event.date}</div>
+                      </div>
+                      <div>
+                        <div className="font-cinzel text-sm text-gold-light/80">Time</div>
+                        <div className="font-serif-display text-xl mt-1 text-cream">{event.time}</div>
+                      </div>
+                      <div>
+                        <div className="font-cinzel text-sm text-gold-light/80">Venue</div>
+                        <div className="font-serif-display text-lg mt-1 text-cream">{event.venue}</div>
+                      </div>
+                    </div>
+                    <div className="mt-6">
+                      <a href={event.mapUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 font-cinzel text-xs tracking-widest uppercase px-6 py-3 rounded-full border border-cream/30 text-cream hover:bg-cream/10 transition-all duration-300">
+                        <Navigation className="w-3.5 h-3.5" />
+                        Get Directions
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </Reveal>
         ))}
       </div>
