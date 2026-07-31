@@ -48,6 +48,7 @@ const W = {
       venue: 'Jain Bhavan, Nairobi, Kenya',
       mapUrl: 'https://maps.app.goo.gl/zxwDKaajZq8gNAxj7',
       color: 'from-teal-700 to-teal-950',
+      image: '/sangeet.png',
     },
     {
       title: 'Wedding',
@@ -265,7 +266,7 @@ function HeroSection() {
         <Reveal delay={0.2}>
           <h1 className="text-6xl sm:text-8xl md:text-9xl leading-tight flex items-center gap-2 sm:gap-4 flex-wrap justify-center" style={{ fontFamily: '"DancingScript", cursive', color: '#c43c46' }}>
             <span>{W.groom}</span>
-            <span className="italic" style={{ fontFamily: '"DancingScript", cursive', color: '#c43c46' }}>&</span>
+            <span className="text-4xl sm:text-5xl md:text-6xl italic" style={{ fontFamily: '"DancingScript", cursive', color: '#c43c46' }}>&</span>
             <span>{W.bride}</span>
           </h1>
         </Reveal>
@@ -599,7 +600,7 @@ function Footer() {
           </div>
 
           <h2 className="text-5xl sm:text-6xl mb-2" style={{ fontFamily: '"DancingScript", cursive', color: '#c43c46' }}>
-            {W.groom} <span className="italic" style={{ fontFamily: '"DancingScript", cursive', color: '#c43c46' }}>&</span> {W.bride}
+            {W.groom} <span className="text-3xl italic" style={{ fontFamily: '"DancingScript", cursive', color: '#c43c46' }}>&</span> {W.bride}
           </h2>
 
           <div className="gold-line w-32 mx-auto my-8" />
