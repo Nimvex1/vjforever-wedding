@@ -59,6 +59,7 @@ const W = {
       venue: 'Naiposha Gardens, Nairobi, Kenya',
       mapUrl: 'https://maps.app.goo.gl/vvUKC6R2AQi3Xbcn8',
       color: 'from-blue-800 to-blue-950',
+      image: '/wedding.png',
     },
   ],
 }
