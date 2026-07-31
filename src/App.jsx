@@ -627,13 +627,21 @@ export default function App() {
 
   useEffect(() => {
     document.title = `${W.groom} & ${W.bride} - Wedding Invitation`
+    const loader = document.getElementById('envelope-loader')
+    if (loader && loader.style.display === 'none') setStarted(true)
   }, [])
+
+  const handleOpen = () => {
+    const loader = document.getElementById('envelope-loader')
+    if (loader) loader.style.display = 'none'
+    setStarted(true)
+  }
 
   return (
     <div className="relative">
       {!started && (
         <div
-          onClick={() => setStarted(true)}
+          onClick={handleOpen}
           className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center cursor-pointer"
         >
           <div className="relative inline-block">
