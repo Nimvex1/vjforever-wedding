@@ -260,7 +260,7 @@ function HeroSection() {
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-cream">
       <img
-        src="/front-page-1.png"
+        src="/front-page-1.jpg"
         alt=""
         fetchPriority="high"
         className="absolute inset-0 w-full h-full object-cover object-[center_30%]"
