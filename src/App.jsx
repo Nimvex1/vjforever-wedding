@@ -639,19 +639,6 @@ export default function App() {
 
   return (
     <div className="relative">
-      {!started && (
-        <div
-          onClick={handleOpen}
-          className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center cursor-pointer"
-        >
-          <div className="relative inline-block">
-            <img src="/envelop.png" alt="Open Invitation" className="w-56 sm:w-72 h-auto drop-shadow-2xl hover:scale-105 transition-transform duration-200" />
-            <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 bg-white/20 backdrop-blur-sm rounded-full px-2.5 py-1">
-              <span className="font-cinzel text-[9px] text-white/80 tracking-wider uppercase">Tap to open</span>
-            </div>
-          </div>
-        </div>
-      )}
       <Suspense fallback={null}>
         <FloatingPetals />
         <MultipleButterflies />
