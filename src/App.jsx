@@ -172,6 +172,7 @@ function MusicPlayer({ start }) {
     if (!audio || !start) return
     audio.volume = 0.45
     audio.loop = true
+    audio.muted = false
     audio.play().catch(() => {})
   }, [start])
 
@@ -633,11 +634,11 @@ export default function App() {
       {!started && (
         <div
           onClick={() => setStarted(true)}
-          className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm flex items-center justify-center cursor-pointer transition-opacity duration-700"
+          className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center cursor-pointer"
         >
-          <div className="animate-fade-in text-center">
-            <img src="/envelop.png" alt="Open Invitation" className="w-64 sm:w-80 h-auto drop-shadow-2xl hover:scale-105 transition-transform duration-300" />
-            <p className="mt-6 font-script text-2xl text-white drop-shadow-lg animate-pulse">Tap to open</p>
+          <div className="text-center">
+            <img src="/envelop.png" alt="Open Invitation" className="w-56 sm:w-72 h-auto drop-shadow-2xl hover:scale-105 transition-transform duration-200" />
+            <p className="mt-4 font-script text-xl text-white drop-shadow-lg">Tap to open</p>
           </div>
         </div>
       )}
