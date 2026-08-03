@@ -97,7 +97,7 @@
             </svg>
             <div>
               <h1 class="font-script text-3xl text-deep-blue">RSVP Dashboard</h1>
-              <p class="font-serif text-sm text-deep-blue/60">Admin Panel — Vinay & Jaynita Wedding</p>
+              <p class="font-serif text-sm text-deep-blue/60">Admin Panel — Viney & Jaynita Wedding</p>
             </div>
           </div>
           <div class="flex items-center gap-3">
@@ -202,9 +202,12 @@
       });
     }
 
-    function getEventsBadge(events) {
+    function getEventsBadge(events, eventGuests) {
       if (!events || !events.length) return '<span class="text-deep-blue/40 font-serif text-sm">None</span>';
-      return events.map(e => `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-champagne/15 text-champagne-dark text-xs font-medium">${eventNames[e] || e}</span>`).join(' ');
+      return events.map(e => {
+        const count = eventGuests?.[e] || 0;
+        return `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-champagne/15 text-champagne-dark text-xs font-medium">${eventNames[e] || e} (${count})</span>`;
+      }).join(' ');
     }
 
     function getSideBadge(side) {
@@ -232,27 +235,27 @@
           <p class="mt-1 font-script text-3xl text-gray-800 sm:text-4xl">${totalGuests}</p>
         </div>
         <div class="stat-card rounded-xl border border-powder-blue/40 bg-white/70 p-5 sm:p-6 shadow-lg shadow-powder-blue/10 backdrop-blur-sm animate-fade-in" style="animation-delay: 0.2s;">
-          <p class="font-serif text-[10px] tracking-[0.25em] text-gray-500 uppercase">Groom Side</p>
+          <p class="font-serif text-[10px] tracking-[0.25em] text-gray-500 uppercase">Groom Guests</p>
           <p class="mt-1 font-script text-3xl text-gray-800 sm:text-4xl">${stats.groomSide || 0}</p>
         </div>
         <div class="stat-card rounded-xl border border-powder-blue/40 bg-white/70 p-5 sm:p-6 shadow-lg shadow-powder-blue/10 backdrop-blur-sm animate-fade-in" style="animation-delay: 0.3s;">
-          <p class="font-serif text-[10px] tracking-[0.25em] text-gray-500 uppercase">Bride Side</p>
+          <p class="font-serif text-[10px] tracking-[0.25em] text-gray-500 uppercase">Bride Guests</p>
           <p class="mt-1 font-script text-3xl text-gray-800 sm:text-4xl">${stats.brideSide || 0}</p>
         </div>
         <div class="stat-card rounded-xl border border-powder-blue/40 bg-white/70 p-5 sm:p-6 shadow-lg shadow-powder-blue/10 backdrop-blur-sm animate-fade-in" style="animation-delay: 0.15s;">
-          <p class="font-serif text-[10px] tracking-[0.25em] text-gray-500 uppercase">Haldi</p>
+          <p class="font-serif text-[10px] tracking-[0.25em] text-gray-500 uppercase">Haldi Guests</p>
           <p class="mt-1 font-script text-3xl text-gray-800 sm:text-4xl">${stats.haldi || 0}</p>
         </div>
         <div class="stat-card rounded-xl border border-powder-blue/40 bg-white/70 p-5 sm:p-6 shadow-lg shadow-powder-blue/10 backdrop-blur-sm animate-fade-in" style="animation-delay: 0.2s;">
-          <p class="font-serif text-[10px] tracking-[0.25em] text-gray-500 uppercase">Mehndi</p>
+          <p class="font-serif text-[10px] tracking-[0.25em] text-gray-500 uppercase">Mehndi Guests</p>
           <p class="mt-1 font-script text-3xl text-gray-800 sm:text-4xl">${stats.mehndi || 0}</p>
         </div>
         <div class="stat-card rounded-xl border border-powder-blue/40 bg-white/70 p-5 sm:p-6 shadow-lg shadow-powder-blue/10 backdrop-blur-sm animate-fade-in" style="animation-delay: 0.25s;">
-          <p class="font-serif text-[10px] tracking-[0.25em] text-gray-500 uppercase">Sangeet</p>
+          <p class="font-serif text-[10px] tracking-[0.25em] text-gray-500 uppercase">Sangeet Guests</p>
           <p class="mt-1 font-script text-3xl text-gray-800 sm:text-4xl">${stats.sangeet || 0}</p>
         </div>
         <div class="stat-card rounded-xl border border-powder-blue/40 bg-white/70 p-5 sm:p-6 shadow-lg shadow-powder-blue/10 backdrop-blur-sm animate-fade-in" style="animation-delay: 0.3s;">
-          <p class="font-serif text-[10px] tracking-[0.25em] text-gray-500 uppercase">Wedding</p>
+          <p class="font-serif text-[10px] tracking-[0.25em] text-gray-500 uppercase">Wedding Guests</p>
           <p class="mt-1 font-script text-3xl text-gray-800 sm:text-4xl">${stats.wedding || 0}</p>
         </div>
       `;
@@ -278,7 +281,7 @@
           <td class="p-4 font-serif text-gray-800">${escapeHtml(rsvp.name)}</td>
           <td class="p-4 font-serif text-gray-600 hidden sm:table-cell">${getSideBadge(rsvp.side)}</td>
           <td class="p-4 font-serif text-gray-600 hidden md:table-cell">${rsvp.guests} ${rsvp.guests === 1 ? 'Guest' : 'Guests'}</td>
-          <td class="p-4 font-serif text-gray-600">${getEventsBadge(rsvp.events)}</td>
+          <td class="p-4 font-serif text-gray-600">${getEventsBadge(rsvp.events, rsvp.eventGuests)}</td>
           <td class="p-4 font-serif text-gray-600 hidden lg:table-cell">${formatDate(rsvp.submittedAt)}</td>
           <td class="p-4">
             <button onclick="event.stopPropagation(); openModal('${rsvp.id}')" class="text-champagne-dark hover:text-champagne font-serif text-sm" aria-label="View details">
@@ -324,7 +327,7 @@
           <div class="p-4 bg-champagne/5 rounded-xl">
             <p class="font-serif text-[10px] tracking-[0.25em] text-deep-blue/70 uppercase mb-2">Events Attending</p>
             <div class="flex flex-wrap gap-2">
-              ${(rsvp.events || []).map(e => `<span class="inline-flex items-center px-3 py-1 rounded-full bg-champagne/15 text-champagne-dark text-sm font-medium">${eventNames[e] || e}</span>`).join('')}
+              ${(rsvp.events || []).map(e => `<span class="inline-flex items-center px-3 py-1 rounded-full bg-champagne/15 text-champagne-dark text-sm font-medium">${eventNames[e] || e}: ${rsvp.eventGuests?.[e] || 0} guests</span>`).join('')}
             </div>
           </div>
 

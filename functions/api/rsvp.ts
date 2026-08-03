@@ -9,6 +9,7 @@ interface RSVPEntry {
   guests: number;
   side: string;
   events: string[];
+  eventGuests: Record<string, number>;
   message: string;
   submittedAt: string;
 }
@@ -51,6 +52,7 @@ export async function onRequestPost(ctx: { request: Request; env: Env }) {
       guests: Number(body.guests) || 1,
       side: body.side,
       events: body.events || [],
+      eventGuests: body.eventGuests || {},
       message: body.message || "",
       submittedAt: new Date().toISOString(),
     };
@@ -91,12 +93,12 @@ export async function onRequestGet(ctx: { request: Request; env: Env }) {
       stats: {
         total: rsvps.length,
         totalGuests: rsvps.reduce((s, r) => s + r.guests, 0),
-        groomSide: rsvps.filter((r) => r.side === "groom").length,
-        brideSide: rsvps.filter((r) => r.side === "bride").length,
-        haldi: rsvps.filter((r) => r.events.includes("haldi")).length,
-        mehndi: rsvps.filter((r) => r.events.includes("mehndi")).length,
-        sangeet: rsvps.filter((r) => r.events.includes("sangeet")).length,
-        wedding: rsvps.filter((r) => r.events.includes("wedding")).length,
+        groomSide: rsvps.filter((r) => r.side === "groom").reduce((s, r) => s + r.guests, 0),
+        brideSide: rsvps.filter((r) => r.side === "bride").reduce((s, r) => s + r.guests, 0),
+        haldi: rsvps.reduce((s, r) => s + (r.eventGuests?.haldi || 0), 0),
+        mehndi: rsvps.reduce((s, r) => s + (r.eventGuests?.mehndi || 0), 0),
+        sangeet: rsvps.reduce((s, r) => s + (r.eventGuests?.sangeet || 0), 0),
+        wedding: rsvps.reduce((s, r) => s + (r.eventGuests?.wedding || 0), 0),
       },
     });
   } catch {

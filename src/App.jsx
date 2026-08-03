@@ -4,9 +4,9 @@ import { Volume2, VolumeX, Navigation, ChevronDown, Heart } from 'lucide-react'
 import './index.css'
 
 const W = {
-  groom: 'Vinay',
+  groom: 'Viney',
   bride: 'Jaynita',
-  groomFullName: 'Vinay',
+  groomFullName: 'Viney',
   brideFullName: 'Jaynita',
   weddingDate: '2026-09-20T10:00:00',
   displayDate: 'June 27, 2026',
@@ -272,6 +272,7 @@ function HeroSection() {
 
       <motion.div style={{ y, opacity }} className="relative z-10 min-h-screen flex flex-col items-center justify-center px-6 text-center -mt-32">
         <Reveal delay={0.2}>
+          <img src="/logo.png" alt="Logo" className="w-24 sm:w-32 h-auto mx-auto mb-4" />
           <h1 className="text-6xl sm:text-8xl md:text-9xl leading-tight flex items-center gap-2 sm:gap-4 flex-wrap justify-center" style={{ fontFamily: '"DancingScript", cursive', color: '#c43c46' }}>
             <span>{W.groom}</span>
             <span className="text-4xl sm:text-5xl md:text-6xl italic" style={{ fontFamily: '"DancingScript", cursive', color: '#c43c46' }}>&</span>
@@ -410,7 +411,7 @@ function EventsSection() {
 }
 
 function RSVPSection() {
-  const [form, setForm] = useState({ name: '', guests: '1', side: '', events: [], message: '' })
+  const [form, setForm] = useState({ name: '', side: '', eventGuests: {}, message: '' })
   const [errors, setErrors] = useState({})
   const [done, setDone] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -424,11 +425,21 @@ function RSVPSection() {
   ]
 
   const toggleEvent = (id) => {
+    setForm(prev => {
+      const newEventGuests = { ...prev.eventGuests }
+      if (newEventGuests[id]) {
+        delete newEventGuests[id]
+      } else {
+        newEventGuests[id] = 1
+      }
+      return { ...prev, eventGuests: newEventGuests }
+    })
+  }
+
+  const setEventGuests = (id, count) => {
     setForm(prev => ({
       ...prev,
-      events: prev.events.includes(id)
-        ? prev.events.filter(e => e !== id)
-        : [...prev.events, id]
+      eventGuests: { ...prev.eventGuests, [id]: Math.max(1, Math.min(10, parseInt(count) || 1)) }
     }))
   }
 
@@ -436,7 +447,7 @@ function RSVPSection() {
     const e = {}
     if (!form.name.trim()) e.name = 'Name is required'
     if (!form.side) e.side = 'Please select a side'
-    if (form.events.length === 0) e.events = 'Please select at least one event'
+    if (Object.keys(form.eventGuests).length === 0) e.events = 'Please select at least one event'
     return e
   }
 
@@ -449,10 +460,19 @@ function RSVPSection() {
     setLoading(true)
     setError('')
     try {
+      const events = Object.keys(form.eventGuests)
+      const totalGuests = Object.values(form.eventGuests).reduce((a, b) => a + b, 0)
       const res = await fetch('/api/rsvp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          name: form.name,
+          guests: totalGuests,
+          side: form.side,
+          events,
+          eventGuests: form.eventGuests,
+          message: form.message,
+        }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error)
@@ -515,19 +535,6 @@ function RSVPSection() {
               </div>
 
               <div>
-                <label className="font-cinzel text-xs tracking-widest uppercase block mb-2" style={{ color: '#8B6914' }}>Number of Guests</label>
-                <select
-                  className={inputClass('guests')}
-                  value={form.guests}
-                  onChange={e => setForm({ ...form, guests: e.target.value })}
-                >
-                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => (
-                    <option key={n} value={n}>{n} {n === 1 ? 'Guest' : 'Guests'}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
                 <label className="font-cinzel text-xs tracking-widest uppercase block mb-2" style={{ color: '#8B6914' }}>Which Side?</label>
                 <select
                   className={inputClass('side')}
@@ -542,18 +549,31 @@ function RSVPSection() {
               </div>
 
               <div>
-                <label className="font-cinzel text-xs tracking-widest uppercase block mb-3" style={{ color: '#8B6914' }}>Functions Attending</label>
-                <div className="space-y-2">
+                <label className="font-cinzel text-xs tracking-widest uppercase block mb-3" style={{ color: '#8B6914' }}>Functions Attending & Number of Guests</label>
+                <div className="space-y-3">
                   {eventList.map(ev => (
-                    <label key={ev.id} className="flex items-center gap-3 cursor-pointer group">
-                      <input
-                        type="checkbox"
-                        checked={form.events.includes(ev.id)}
-                        onChange={() => toggleEvent(ev.id)}
-                        className="w-5 h-5 rounded border-gold/40 text-gold accent-gold focus:ring-gold/30"
-                      />
-                      <span className="font-serif-display text-foreground/80 group-hover:text-foreground transition">{ev.label}</span>
-                    </label>
+                    <div key={ev.id} className="flex items-center gap-3">
+                      <label className="flex items-center gap-3 cursor-pointer group flex-1">
+                        <input
+                          type="checkbox"
+                          checked={!!form.eventGuests[ev.id]}
+                          onChange={() => toggleEvent(ev.id)}
+                          className="w-5 h-5 rounded border-gold/40 text-gold accent-gold focus:ring-gold/30"
+                        />
+                        <span className="font-serif-display text-foreground/80 group-hover:text-foreground transition">{ev.label}</span>
+                      </label>
+                      {form.eventGuests[ev.id] !== undefined && (
+                        <select
+                          value={form.eventGuests[ev.id]}
+                          onChange={e => setEventGuests(ev.id, e.target.value)}
+                          className="w-20 px-2 py-1.5 rounded-lg bg-cream border border-gold/30 font-serif-display text-foreground text-sm focus:outline-none focus:border-gold transition"
+                        >
+                          {[1,2,3,4,5,6,7,8,9,10].map(n => (
+                            <option key={n} value={n}>{n}</option>
+                          ))}
+                        </select>
+                      )}
+                    </div>
                   ))}
                 </div>
                 {errors.events && <p className="text-red-400 text-xs mt-1 font-serif-display">{errors.events}</p>}
