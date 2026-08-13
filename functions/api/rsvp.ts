@@ -41,8 +41,8 @@ export async function onRequestPost(ctx: { request: Request; env: Env }) {
     if (!body.side) {
       return json({ error: "Side is required" }, 400);
     }
-    if (!body.events || body.events.length === 0) {
-      return json({ error: "At least one event is required" }, 400);
+    if (!body.message?.trim() && (!body.events || body.events.length === 0)) {
+      return json({ error: "Please select events to attend or leave a message" }, 400);
     }
 
     const id = crypto.randomUUID();
