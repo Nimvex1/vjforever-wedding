@@ -134,7 +134,7 @@
                 <thead class="bg-champagne/10">
                   <tr class="text-left">
                     <th class="p-4 font-serif text-sm tracking-wider text-gray-600 uppercase">Guest Name</th>
-                    <th class="p-4 font-serif text-sm tracking-wider text-gray-600 uppercase">Status</th>
+                    <th class="p-4 font-serif text-sm tracking-wider text-gray-600 uppercase">Guest Name</th>
                     <th class="p-4 font-serif text-sm tracking-wider text-gray-600 uppercase hidden sm:table-cell">Side</th>
                     <th class="p-4 font-serif text-sm tracking-wider text-gray-600 uppercase hidden md:table-cell">Guests</th>
                     <th class="p-4 font-serif text-sm tracking-wider text-gray-600 uppercase">Events</th>
@@ -297,8 +297,12 @@
 
       tbody.innerHTML = rsvps.map((rsvp, index) => `
         <tr class="hover:bg-ice-blue/50 transition-colors cursor-pointer animate-slide-in" style="animation-delay: ${index * 0.05}s;" onclick="openModal('${rsvp.id}')">
-          <td class="p-4 font-serif text-gray-800">${escapeHtml(rsvp.name)}</td>
-          <td class="p-4">${getStatusBadge(rsvp)}</td>
+          <td class="p-4">
+            <div class="flex items-center gap-2">
+              <span class="font-serif text-gray-800">${escapeHtml(rsvp.name)}</span>
+              ${getStatusBadge(rsvp)}
+            </div>
+          </td>
           <td class="p-4 font-serif text-gray-600 hidden sm:table-cell">${getSideBadge(rsvp.side)}</td>
           <td class="p-4 font-serif text-gray-600 hidden md:table-cell">${rsvp.guests} ${rsvp.guests === 1 ? 'Guest' : 'Guests'}</td>
           <td class="p-4 font-serif text-gray-600">${getEventsBadge(rsvp.events, rsvp.eventGuests)}</td>
