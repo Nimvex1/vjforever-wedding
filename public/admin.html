@@ -115,7 +115,7 @@
       <!-- Stats Grid -->
       <main class="flex-1 px-4 sm:px-8 pb-12">
         <div class="mx-auto max-w-6xl">
-          <div id="statsGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8"></div>
+          <div id="statsGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-8"></div>
 
           <!-- RSVP Table -->
           <div class="rounded-2xl border border-powder-blue/40 bg-white/70 shadow-xl shadow-powder-blue/10 backdrop-blur-sm overflow-hidden">
@@ -134,6 +134,7 @@
                 <thead class="bg-champagne/10">
                   <tr class="text-left">
                     <th class="p-4 font-serif text-sm tracking-wider text-gray-600 uppercase">Guest Name</th>
+                    <th class="p-4 font-serif text-sm tracking-wider text-gray-600 uppercase">Status</th>
                     <th class="p-4 font-serif text-sm tracking-wider text-gray-600 uppercase hidden sm:table-cell">Side</th>
                     <th class="p-4 font-serif text-sm tracking-wider text-gray-600 uppercase hidden md:table-cell">Guests</th>
                     <th class="p-4 font-serif text-sm tracking-wider text-gray-600 uppercase">Events</th>
@@ -210,6 +211,14 @@
       }).join(' ');
     }
 
+    function getStatusBadge(rsvp) {
+      const hasAttending = rsvp.events && rsvp.events.length > 0 && rsvp.guests > 0;
+      if (hasAttending) {
+        return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-green-100 text-green-700 text-xs font-medium">Accepted</span>';
+      }
+      return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-red-100 text-red-700 text-xs font-medium">Declined</span>';
+    }
+
     function getSideBadge(side) {
       const label = side === 'groom' ? "Groom's Side" : "Bride's Side";
       const color = side === 'groom' ? 'bg-blue-100 text-blue-700' : 'bg-pink-100 text-pink-700';
@@ -225,12 +234,22 @@
     // --- RENDER ---
     function renderStats(stats) {
       const totalGuests = stats.totalGuests || 0;
+      const accepted = allRSVPs.filter(r => r.events && r.events.length > 0 && r.guests > 0).length;
+      const declined = allRSVPs.length - accepted;
       document.getElementById('statsGrid').innerHTML = `
         <div class="stat-card rounded-xl border border-powder-blue/40 bg-white/70 p-5 sm:p-6 shadow-lg shadow-powder-blue/10 backdrop-blur-sm animate-fade-in">
           <p class="font-serif text-[10px] tracking-[0.25em] text-gray-500 uppercase">Total RSVPs</p>
           <p class="mt-1 font-script text-3xl text-gray-800 sm:text-4xl">${stats.total || 0}</p>
         </div>
-        <div class="stat-card rounded-xl border border-powder-blue/40 bg-white/70 p-5 sm:p-6 shadow-lg shadow-powder-blue/10 backdrop-blur-sm animate-fade-in" style="animation-delay: 0.1s;">
+        <div class="stat-card rounded-xl border border-green-200 bg-green-50/70 p-5 sm:p-6 shadow-lg shadow-green-100/10 backdrop-blur-sm animate-fade-in" style="animation-delay: 0.05s;">
+          <p class="font-serif text-[10px] tracking-[0.25em] text-green-600 uppercase">Accepted</p>
+          <p class="mt-1 font-script text-3xl text-green-700 sm:text-4xl">${accepted}</p>
+        </div>
+        <div class="stat-card rounded-xl border border-red-200 bg-red-50/70 p-5 sm:p-6 shadow-lg shadow-red-100/10 backdrop-blur-sm animate-fade-in" style="animation-delay: 0.1s;">
+          <p class="font-serif text-[10px] tracking-[0.25em] text-red-600 uppercase">Declined</p>
+          <p class="mt-1 font-script text-3xl text-red-700 sm:text-4xl">${declined}</p>
+        </div>
+        <div class="stat-card rounded-xl border border-powder-blue/40 bg-white/70 p-5 sm:p-6 shadow-lg shadow-powder-blue/10 backdrop-blur-sm animate-fade-in" style="animation-delay: 0.15s;">
           <p class="font-serif text-[10px] tracking-[0.25em] text-gray-500 uppercase">Total Guests</p>
           <p class="mt-1 font-script text-3xl text-gray-800 sm:text-4xl">${totalGuests}</p>
         </div>
@@ -279,6 +298,7 @@
       tbody.innerHTML = rsvps.map((rsvp, index) => `
         <tr class="hover:bg-ice-blue/50 transition-colors cursor-pointer animate-slide-in" style="animation-delay: ${index * 0.05}s;" onclick="openModal('${rsvp.id}')">
           <td class="p-4 font-serif text-gray-800">${escapeHtml(rsvp.name)}</td>
+          <td class="p-4">${getStatusBadge(rsvp)}</td>
           <td class="p-4 font-serif text-gray-600 hidden sm:table-cell">${getSideBadge(rsvp.side)}</td>
           <td class="p-4 font-serif text-gray-600 hidden md:table-cell">${rsvp.guests} ${rsvp.guests === 1 ? 'Guest' : 'Guests'}</td>
           <td class="p-4 font-serif text-gray-600">${getEventsBadge(rsvp.events, rsvp.eventGuests)}</td>
@@ -309,7 +329,10 @@
             </div>
             <div>
               <p class="font-script text-xl text-deep-blue">${escapeHtml(rsvp.name)}</p>
-              <p class="font-serif text-sm text-deep-blue/60">${getSideBadge(rsvp.side)}</p>
+              <div class="flex items-center gap-2 mt-1">
+                ${getStatusBadge(rsvp)}
+                <span class="font-serif text-sm text-deep-blue/60">${getSideBadge(rsvp.side)}</span>
+              </div>
             </div>
           </div>
           
