@@ -461,7 +461,8 @@ function RSVPSection() {
     const e = {}
     if (!form.name.trim()) e.name = 'Name is required'
     if (!form.side) e.side = 'Please select a side'
-    if (Object.keys(form.eventGuests).length === 0) e.events = 'Please select at least one event'
+    const hasAttending = Object.values(form.eventGuests).some(g => g > 0)
+    if (!hasAttending && !form.message.trim()) e.message = 'Please leave a message when declining'
     return e
   }
 
