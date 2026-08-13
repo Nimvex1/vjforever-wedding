@@ -1,0 +1,30 @@
+﻿node_modules
+dist
+dist-ssr
+*.local
+.wrangler
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Root-level originals and temp files
+envelop.png
+envelop_1.png
+envelop_new.png
+Front page.png
+Front page_1.png
+Front page_center-gigapixel.jpg.jpeg
+Haldi.png
+Logo.png
+mehendi.png
+wedding.png
+final_BG.jpg.jpeg
+final_last_bg.jpg.jpeg
+Music.mp4
+dancing-script.zip
